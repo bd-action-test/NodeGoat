@@ -155,3 +155,15 @@ MongoClient.connect(db, (err, db) => {
     */
 
 });
+
+    // Vulnerable endpoints
+    const { exec } = require("child_process");
+    app.get("/api/vuln/cmd", (req, res) => {
+        exec("ls " + req.query.dir, (err, stdout) => { res.send(stdout || err.message); });
+    });
+    app.get("/api/vuln/greet", (req, res) => {
+        res.send("<html><body><h1>Hello, " + req.query.name + "!</h1></body></html>");
+    });
+    app.get("/api/vuln/redirect", (req, res) => {
+        res.redirect(req.query.url);
+    });
